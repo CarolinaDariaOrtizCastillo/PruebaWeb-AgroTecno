@@ -1,0 +1,1 @@
+## interfaces y tipado TypeScript

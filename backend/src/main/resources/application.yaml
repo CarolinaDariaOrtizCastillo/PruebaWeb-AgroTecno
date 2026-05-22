@@ -1,0 +1,38 @@
+server:
+  port: ${PORT}  # Valor por defecto si PORT no está configurado
+  url: ${SERVER_URL}
+
+spring:
+  datasource:
+    url: ${DATABASE_URL}  ## Cambiar "model" por tu base de datos
+    username: ${DATABASE_USERNAME}          ## Cambiar por tu usuario
+    password: ${DATABASE_PASSWORD}          ## Cambiar por tu contraseña
+    driver-class-name: ${DATABASE_DRIVER}
+
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC  # Cambiado a UTC para que coincida con la BD
+        format_sql: true
+  
+  jackson:
+    time-zone: America/Lima  # Para que la API muestre las fechas en hora Lima
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      adjust-dates-to-context-time-zone: true
+    default-property-inclusion: non_null
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operations-sorter: method

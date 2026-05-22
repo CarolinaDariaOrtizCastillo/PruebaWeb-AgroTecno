@@ -1,0 +1,45 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Formula, FormulaCreate, FormulaUpdate } from '../../../core/models/formula.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class FormulaService {
+  // Se mantiene tu URL funcional en el puerto 8085
+  private apiUrl = 'http://localhost:2000/formula';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+
+  constructor(private http: HttpClient) {}
+
+  // OBTENER TODAS LAS FÓRMULAS
+  getFormulas(): Observable<Formula[]> {
+    return this.http.get<Formula[]>(this.apiUrl);
+  }
+
+  // OBTENER FÓRMULA POR ID
+  getFormulaById(id: number): Observable<Formula> {
+    return this.http.get<Formula>(`${this.apiUrl}/${id}`);
+  }
+
+  // CREAR FÓRMULA
+  createFormula(formula: FormulaCreate): Observable<Formula> {
+    return this.http.post<Formula>(`${this.apiUrl}/save`, formula, this.httpOptions);
+  }
+
+  // ACTUALIZAR FÓRMULA
+  updateFormula(id: number, formula: FormulaUpdate): Observable<Formula> {
+    return this.http.put<Formula>(`${this.apiUrl}/update/${id}`, formula, this.httpOptions);
+  }
+
+  // ELIMINAR FÓRMULA (soft delete)
+  // CORRECCIÓN: Se cambia .patch por .delete para golpear el endpoint destructivo/lógico de Spring Boot correctamente
+  deleteFormula(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`, this.httpOptions);
+  }
+}
